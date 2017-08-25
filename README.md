@@ -1,7 +1,7 @@
 # Example hostname webhook
 
 This is an example Webhook integration that shows how to pull hostnames from an external
-system to assign them to your instances.
+system to assign them to your Scalr servers.
 
 ## Setup instructions
 
@@ -65,5 +65,8 @@ curl -XPOST http://localhost:5000/hostname/
 
 You should get a 403 error, because our request was not signed. If that is not the case, check for errors in the uwsgi logs.
 
-
+Now to use this webhook to assign hostnames to some instances, go in a Farm's configuration. Click
+on a Farm Role, and in the Network tab, select "Webhook" as the hostname source. In the dropdown,
+select the endpoint you just created. Then save the Farm and launch it. Scalr will make a request
+to the webhook handler and assign the generated hostname to the instance.
 
