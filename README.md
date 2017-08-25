@@ -3,6 +3,9 @@
 This is an example Webhook integration that shows how to pull hostnames from an external
 system to assign them to your Scalr servers.
 
+This example webhook handler just generates a random string when Scalr requests a hostname. See the
+[webhook.py](webhook.py) file for additional details.
+
 ## Setup instructions
 
 The instructions below are written for RHEL 7 / Centos 7. Adapt as necessary for other distributions.
