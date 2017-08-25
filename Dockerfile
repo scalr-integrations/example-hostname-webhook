@@ -1,12 +1,11 @@
-FROM python:3.6-alpine
+FROM debian:jessie-slim
 MAINTAINER Aloys Augustin <aloys@scalr.com>
 
-RUN apk add --no-cache build-base linux-headers pcre-dev && \
-    pip3 install uwsgi
+RUN apt-get install python python-dev python-pip uwsgi uwsgi-plugin-python
 
 ADD . /opt/example-hostname-webhook
 
-RUN pip3 install -r /opt/example-hostname-webhook/requirements.txt
+RUN pip install -r /opt/example-hostname-webhook/requirements.txt
 
-CMD ["uwsgi", "--ini", "/opt/example-hostname-webhook/uwsgi.ini"]
+CMD ["/usr/local/bin/uwsgi", "--ini", "/opt/example-hostname-webhook/uwsgi.ini"]
 
