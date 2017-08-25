@@ -54,6 +54,7 @@ def compute_hostname(data):
     # As an example we just generate a random string with 10 letters and 3 numbers
     hostname = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
     hostname += ''.join(random.choice(string.digits) for i in range(3))
+    logging.info('Generated hostname: %s', hostname)
     return json.dumps({
         'hostname': hostname.lower()
     })
@@ -61,11 +62,13 @@ def compute_hostname(data):
 
 def validate_request(request):
     if 'X-Signature' not in request.headers or 'Date' not in request.headers:
+        logging.debug('Missing signature headers')
         return False
     date = request.headers['Date']
     body = request.data
     expected_signature = binascii.hexlify(hmac.new(SCALR_SIGNING_KEY, body + date, sha1).digest())
     if expected_signature != request.headers['X-Signature']:
+        logging.debug('Signature does not match')
         return False
     date = dateutil.parser.parse(date)
     now = datetime.now(pytz.utc)
