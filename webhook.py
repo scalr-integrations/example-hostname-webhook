@@ -54,7 +54,9 @@ def compute_hostname(data):
     # As an example we just generate a random string with 10 letters and 3 numbers
     hostname = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
     hostname += ''.join(random.choice(string.digits) for i in range(3))
-    return hostname.lower()
+    return json.dumps({
+        'hostname': hostname.lower()
+    })
 
 
 def validate_request(request):
