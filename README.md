@@ -63,7 +63,7 @@ The uwsgi logs are appended to `/var/log/messages`.
 
 To check that the web server is serving our webhook, run the following command on the webhook server:
 ```
-curl -XPOST http://localhost:5000/hostname/
+curl -XPOST http://localhost:5008/hostname/
 ```
 
 You should get a 403 error, because our request was not signed. If that is not the case, check for errors in the uwsgi logs.
