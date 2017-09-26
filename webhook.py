@@ -12,19 +12,20 @@ import logging
 import binascii
 import dateutil.parser
 import hmac
+import os
 
 from hashlib import sha1
 from datetime import datetime
 
 
-
-config_file = './config_prod.json'
-
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 
-# will be overridden if present in config_file
-SCALR_SIGNING_KEY = ''
+# Configuration variables
+SCALR_SIGNING_KEY = os.getenv('SCALR_SIGNING_KEY', '')
+
+for var in ['SCALR_SIGNING_KEY']:
+    logging.info('Config: %s = %s', var, globals()[var] if 'PASS' not in var else '*' * len(globals()[var]))
 
 
 @app.route("/hostname/", methods=['POST'])
@@ -75,20 +76,6 @@ def validate_request(request):
     delta = abs((now - date).total_seconds())
     return delta < 300
 
-
-def load_config(filename):
-    with open(filename) as f:
-        options = json.loads(f.read())
-        for key in options:
-            if key in []:
-                logging.info('Loaded config: {}'.format(key))
-                globals()[key] = options[key]
-            elif key in ['SCALR_SIGNING_KEY']:
-                logging.info('Loaded config: {}'.format(key))
-                globals()[key] = options[key].encode('ascii')
-
-
-load_config(config_file)
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')

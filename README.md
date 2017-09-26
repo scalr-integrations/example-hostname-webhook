@@ -45,12 +45,8 @@ Note down the signing key that Scalr generated, we will need it later.
 
 #### Webhook configuration
 
-Create the production configuration file:
-```
-cp config.json config_prod.json
-```
-
-Edit the `config_prod.json` file and complete it with the Scalr signing key that Scalr generated.
+Edit the `/etc/uwsgi.d/example-hostname-webhook.ini` file and complete the `env = SCALR_SIGNING_KEY`
+statement with the Scalr signing key that Scalr generated.
 
 Reload the configuration:
 ```
@@ -59,14 +55,14 @@ systemctl restart uwsgi
 
 ## Testing and troubleshooting
 
-The uwsgi logs are appended to `/var/log/messages`.
+The uwsgi logs are appended to `/var/log/messages` by default on centos 7.
 
 To check that the web server is serving our webhook, run the following command on the webhook server:
 ```
 curl -XPOST http://localhost:5008/hostname/
 ```
 
-You should get a 403 error, because our request was not signed. If that is not the case, check for errors in the uwsgi logs.
+You should get a 403 error, because this request was not signed. If that is not the case, check for errors in the uwsgi logs.
 
 Now to use this webhook to assign hostnames to some instances, go in a Farm's configuration. Click
 on a Farm Role, and in the Network tab, select "Webhook" as the hostname source. In the dropdown,
